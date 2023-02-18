@@ -1,0 +1,21 @@
+{
+  "name": "alyona-cabinet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "boom": "^7.3.0",
+    "express": "^4.18.2",
+    "express-promise-router": "^4.1.1",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.4",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4"
+  }
+}
