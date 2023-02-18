@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const routes = require("./src/routes");
 
 sequelize.sync().then(() => console.log("db is ready"));
-const PORT = 8080;
+
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
