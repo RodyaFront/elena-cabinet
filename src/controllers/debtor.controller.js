@@ -28,7 +28,7 @@ const debtorController = {
   async create(req, res, next) {
     try {
       const debtor = await Debtor.create(req.body);
-      return res.status(200).json({ debtor });
+      return res.status(200).json({ debtor, status: true });
     } catch (e) {
       next(boom.boomify(e));
     }
@@ -39,7 +39,7 @@ const debtorController = {
         { ...req.body },
         { where: { id: req.params.id } }
       );
-      return res.status(200).json({ debtor });
+      return res.status(200).json({ debtor, status: true });
     } catch (e) {
       next(boom.boomify(e));
     }
