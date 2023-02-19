@@ -34,7 +34,4 @@ DebtHistory.init(
   }
 );
 
-DebtHistory.belongsTo(Debtor, { foreignKey: "debtor_id" });
-Debtor.hasMany(DebtHistory, { foreignKey: "debtor_id" });
-
 module.exports = DebtHistory;

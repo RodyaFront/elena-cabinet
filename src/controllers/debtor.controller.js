@@ -60,12 +60,10 @@ const debtorController = {
   },
   async getDebtsHistory(req, res, next) {
     try {
-      const debtor = await Debtor.findByPk(req.params.id);
       const history = await DebtHistory.findAll({
-        where: { debtor_id: debtor.id },
+        where: { debtor_id: req.params.id },
       });
-
-      return res.status(200).json({ debtor, history });
+      return res.status(200).json({ history });
     } catch (e) {
       next(boom.boomify(e));
     }
