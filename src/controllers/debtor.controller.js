@@ -1,4 +1,5 @@
 const Debtor = require("../models/Debtor");
+const DebtHistory = require("../models/DebtHistory");
 const boom = require("boom");
 
 const debtorController = {
@@ -35,11 +36,16 @@ const debtorController = {
   },
   async update(req, res, next) {
     try {
-      const debtor = await Debtor.update(
-        { ...req.body },
-        { where: { id: req.params.id } }
-      );
-      return res.status(200).json({ debtor, status: true });
+      await Debtor.update({ ...req.body }, { where: { id: req.params.id } });
+
+      const newDebtHistory = await DebtHistory.create({
+        debtor_id: req.params.id,
+        amount: req.body.difference || req.body.debt,
+        date: new Date(),
+        description: req.body.difference ? "Приплюсовано" : "Долг переписан",
+      });
+
+      return res.status(200).json({ status: true });
     } catch (e) {
       next(boom.boomify(e));
     }
@@ -48,6 +54,18 @@ const debtorController = {
     try {
       await Debtor.destroy({ where: { id: req.params.id } });
       return res.status(200).json({ message: "Debtor successfully deleted." });
+    } catch (e) {
+      next(boom.boomify(e));
+    }
+  },
+  async getDebtsHistory(req, res, next) {
+    try {
+      const debtor = await Debtor.findByPk(req.params.id);
+      const history = await DebtHistory.findAll({
+        where: { debtor_id: debtor.id },
+      });
+
+      return res.status(200).json({ debtor, history });
     } catch (e) {
       next(boom.boomify(e));
     }
