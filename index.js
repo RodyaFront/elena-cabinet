@@ -3,8 +3,14 @@ const sequelize = require("./database");
 const bodyParser = require("body-parser");
 const routes = require("./src/routes");
 const cors = require("cors");
+const logger = require("./src/utils/logger");
 
-sequelize.sync().then(() => console.log("db is ready"));
+sequelize.sync().then(() => {
+  logger.log({
+    level: "info",
+    message: `Database is ready.`,
+  });
+});
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,6 +23,15 @@ routes.forEach(({ path, route }) => {
   app.use(`/api${path}`, route);
 });
 
+// Добавление логгера в middleware
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
+
 app.listen(PORT, () => {
-  console.log(`Server has been started on port ${PORT}`);
+  logger.info({
+    level: "info",
+    message: `Server has started on port ${PORT}`,
+  });
 });
